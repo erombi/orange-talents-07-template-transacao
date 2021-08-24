@@ -1,8 +1,9 @@
 package br.com.zup.academy.transacoes.domain;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import java.util.Objects;
 
 @Entity
 @Table(name = "tb_cartao")
@@ -16,11 +17,21 @@ public class Cartao {
     public Cartao() {
     }
 
-    public void setId(String id) {
+    public Cartao(String id, String email) {
         this.id = id;
+        this.email = email;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Cartao cartao = (Cartao) o;
+        return Objects.equals(id, cartao.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }

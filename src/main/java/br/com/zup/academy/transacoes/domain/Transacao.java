@@ -3,6 +3,7 @@ package br.com.zup.academy.transacoes.domain;
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 @Entity
 @Table(name = "tb_transacao")
@@ -32,23 +33,16 @@ public class Transacao {
         this.efetivadaEm = efetivadaEm;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Transacao transacao = (Transacao) o;
+        return Objects.equals(id, transacao.id);
     }
 
-    public void setValor(BigDecimal valor) {
-        this.valor = valor;
-    }
-
-    public void setEstabelecimento(Estabelecimento estabelecimento) {
-        this.estabelecimento = estabelecimento;
-    }
-
-    public void setCartao(Cartao cartao) {
-        this.cartao = cartao;
-    }
-
-    public void setEfetivadaEm(LocalDateTime efetivadaEm) {
-        this.efetivadaEm = efetivadaEm;
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }
