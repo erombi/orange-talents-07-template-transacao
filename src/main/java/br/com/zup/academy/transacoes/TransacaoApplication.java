@@ -1,4 +1,4 @@
-package br.com.zup.academy.transacoes.domain;
+package br.com.zup.academy.transacoes;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

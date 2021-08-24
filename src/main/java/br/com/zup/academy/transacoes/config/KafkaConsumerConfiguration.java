@@ -1,4 +1,4 @@
-package br.com.zup.academy.transacoes.domain.config;
+package br.com.zup.academy.transacoes.config;
 
 import br.com.zup.academy.transacoes.domain.Transacao;
 import org.apache.kafka.clients.consumer.ConsumerConfig;

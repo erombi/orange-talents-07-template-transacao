@@ -9,9 +9,6 @@ import javax.persistence.*;
 public class Cartao {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long idInterno;
-
     private String id;
     private String email;
 

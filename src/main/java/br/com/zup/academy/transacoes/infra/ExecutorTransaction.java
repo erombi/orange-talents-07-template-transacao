@@ -1,4 +1,4 @@
-package br.com.zup.academy.transacoes.domain;
+package br.com.zup.academy.transacoes.infra;
 
 import org.springframework.stereotype.Component;
 
