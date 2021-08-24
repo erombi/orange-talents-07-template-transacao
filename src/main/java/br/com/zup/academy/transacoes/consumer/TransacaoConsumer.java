@@ -22,7 +22,7 @@ public class TransacaoConsumer {
 
     private final Logger logger = LoggerFactory.getLogger(TransacaoConsumer.class);
 
-    @KafkaListener(topics = "transacoes", containerFactory = "transacoesKafkaListenerContainerFactory")
+    @KafkaListener(topics = "transacoes", containerFactory = "kafkaListenerContainerFactory")
     public void listenWithHeaders(@Payload TransacaoDTO dto) {
         executor.inTransaction(() -> {
             Transacao transacao = dto.toModel();

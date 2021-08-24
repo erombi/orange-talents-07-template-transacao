@@ -7,6 +7,7 @@ import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.kafka.KafkaProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.annotation.EnableKafka;
@@ -26,25 +27,33 @@ public class KafkaConsumerConfiguration {
     @Value("${KAFKA_URL:127.0.0.1:9092}")
     private String kafkaUrl;
 
-    @Bean
-    public ConsumerFactory<String, TransacaoDTO> transacoesConsumerFactory() {
-        Map<String, Object> props = new HashMap<>();
-        props.put(                ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, kafkaUrl);
-        props.put(ConsumerConfig.GROUP_ID_CONFIG, "CONSULTA_TRANSACOES");
-        props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, JsonDeserializer.class);
+    private final KafkaProperties kafkaProperties;
 
-        JsonDeserializer<TransacaoDTO> transacaoJsonDeserializer = new JsonDeserializer<>(TransacaoDTO.class);
-        transacaoJsonDeserializer.addTrustedPackages("*");
-
-        return new DefaultKafkaConsumerFactory<>(props, new StringDeserializer(), transacaoJsonDeserializer);
+    public KafkaConsumerConfiguration(KafkaProperties kafkaProperties) {
+        this.kafkaProperties = kafkaProperties;
     }
 
+    public Map<String, Object> consumerConfigurations() {
+        Map<String, Object> properties = new HashMap<>();
+        properties.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, kafkaProperties.getBootstrapServers());
+        properties.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, kafkaProperties.getConsumer().getKeyDeserializer());
+        properties.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, kafkaProperties.getConsumer().getValueDeserializer());
+        properties.put(ConsumerConfig.GROUP_ID_CONFIG, kafkaProperties.getConsumer().getGroupId());
+        properties.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, kafkaProperties.getConsumer().getAutoOffsetReset());
+        return properties;
+    }
     @Bean
-    public ConcurrentKafkaListenerContainerFactory<String, TransacaoDTO> transacoesKafkaListenerContainerFactory() {
+    public ConsumerFactory<String, TransacaoDTO> transactionConsumerFactory() {
+        StringDeserializer stringDeserializer = new StringDeserializer();
+        org.springframework.kafka.support.serializer.JsonDeserializer<TransacaoDTO> jsonDeserializer = new JsonDeserializer<>(TransacaoDTO.class, false);
 
-        ConcurrentKafkaListenerContainerFactory<String, TransacaoDTO> factory =
-                new ConcurrentKafkaListenerContainerFactory<>();
-        factory.setConsumerFactory(transacoesConsumerFactory());
+        return new DefaultKafkaConsumerFactory<>(consumerConfigurations(), stringDeserializer, jsonDeserializer);
+    }
+    @Bean
+    public ConcurrentKafkaListenerContainerFactory<String, TransacaoDTO> kafkaListenerContainerFactory() {
+        ConcurrentKafkaListenerContainerFactory<String, TransacaoDTO> factory = new ConcurrentKafkaListenerContainerFactory<>();
+        factory.setConsumerFactory(transactionConsumerFactory());
+
         return factory;
     }
 }
