@@ -11,6 +11,11 @@ public class CartaoDTO {
     public CartaoDTO() {
     }
 
+    public CartaoDTO(Cartao cartao) {
+        this.id = cartao.getId();
+        this.email = cartao.getEmail();
+    }
+
     public String getId() {
         return id;
     }

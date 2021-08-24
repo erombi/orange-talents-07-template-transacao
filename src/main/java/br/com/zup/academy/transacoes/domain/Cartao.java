@@ -22,6 +22,14 @@ public class Cartao {
         this.email = email;
     }
 
+    public String getId() {
+        return id;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

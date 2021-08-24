@@ -27,6 +27,18 @@ public class Estabelecimento {
         this.endereco = endereco;
     }
 
+    public String getNome() {
+        return nome;
+    }
+
+    public String getCidade() {
+        return cidade;
+    }
+
+    public String getEndereco() {
+        return endereco;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

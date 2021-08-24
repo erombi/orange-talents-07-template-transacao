@@ -17,6 +17,14 @@ public class TransacaoDTO {
     public TransacaoDTO() {
     }
 
+    public TransacaoDTO(Transacao transacao) {
+        this.id = transacao.getId();
+        this.valor = transacao.getValor();
+        this.estabelecimento = new EstabelecimentoDTO(transacao.getEstabelecimento());
+        this.cartao = new CartaoDTO(transacao.getCartao());
+        this.efetivadaEm = transacao.getEfetivadaEm();
+    }
+
     public String getId() {
         return id;
     }

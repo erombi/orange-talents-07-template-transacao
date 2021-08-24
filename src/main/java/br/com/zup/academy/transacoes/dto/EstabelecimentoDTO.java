@@ -12,6 +12,12 @@ public class EstabelecimentoDTO {
     public EstabelecimentoDTO() {
     }
 
+    public EstabelecimentoDTO(Estabelecimento estabelecimento) {
+        this.nome = estabelecimento.getNome();
+        this.cidade = estabelecimento.getCidade();
+        this.endereco = estabelecimento.getEndereco();
+    }
+
     public String getNome() {
         return nome;
     }
