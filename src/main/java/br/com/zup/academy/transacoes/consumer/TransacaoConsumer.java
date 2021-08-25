@@ -1,7 +1,7 @@
 package br.com.zup.academy.transacoes.consumer;
 
 import br.com.zup.academy.transacoes.domain.Transacao;
-import br.com.zup.academy.transacoes.dto.TransacaoDTO;
+import br.com.zup.academy.transacoes.dto.TransacaoForm;
 import br.com.zup.academy.transacoes.infra.ExecutorTransaction;
 import br.com.zup.academy.transacoes.repository.TransacaoRepository;
 import org.slf4j.Logger;
@@ -23,7 +23,7 @@ public class TransacaoConsumer {
     private final Logger logger = LoggerFactory.getLogger(TransacaoConsumer.class);
 
     @KafkaListener(topics = "transacoes", containerFactory = "kafkaListenerContainerFactory")
-    public void listenWithHeaders(@Payload TransacaoDTO dto) {
+    public void listenWithHeaders(@Payload TransacaoForm dto) {
         executor.inTransaction(() -> {
             Transacao transacao = dto.toModel();
 

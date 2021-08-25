@@ -1,10 +1,7 @@
 package br.com.zup.academy.transacoes.config;
 
-import br.com.zup.academy.transacoes.domain.Transacao;
-import br.com.zup.academy.transacoes.dto.TransacaoDTO;
-import org.apache.kafka.clients.consumer.Consumer;
+import br.com.zup.academy.transacoes.dto.TransacaoForm;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
-import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.kafka.KafkaProperties;
@@ -18,7 +15,6 @@ import org.springframework.kafka.support.serializer.JsonDeserializer;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Properties;
 
 @EnableKafka
 @Configuration
@@ -43,15 +39,15 @@ public class KafkaConsumerConfiguration {
         return properties;
     }
     @Bean
-    public ConsumerFactory<String, TransacaoDTO> transactionConsumerFactory() {
+    public ConsumerFactory<String, TransacaoForm> transactionConsumerFactory() {
         StringDeserializer stringDeserializer = new StringDeserializer();
-        org.springframework.kafka.support.serializer.JsonDeserializer<TransacaoDTO> jsonDeserializer = new JsonDeserializer<>(TransacaoDTO.class, false);
+        org.springframework.kafka.support.serializer.JsonDeserializer<TransacaoForm> jsonDeserializer = new JsonDeserializer<>(TransacaoForm.class, false);
 
         return new DefaultKafkaConsumerFactory<>(consumerConfigurations(), stringDeserializer, jsonDeserializer);
     }
     @Bean
-    public ConcurrentKafkaListenerContainerFactory<String, TransacaoDTO> kafkaListenerContainerFactory() {
-        ConcurrentKafkaListenerContainerFactory<String, TransacaoDTO> factory = new ConcurrentKafkaListenerContainerFactory<>();
+    public ConcurrentKafkaListenerContainerFactory<String, TransacaoForm> kafkaListenerContainerFactory() {
+        ConcurrentKafkaListenerContainerFactory<String, TransacaoForm> factory = new ConcurrentKafkaListenerContainerFactory<>();
         factory.setConsumerFactory(transactionConsumerFactory());
 
         return factory;
